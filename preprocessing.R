@@ -37,6 +37,8 @@ MSFT <- tq_get("MSFT") %>% column_to_rownames(var = "date") %>%
 head(MSFT)
 view(MSFT %>% select(open, close, up, gap_up, down, gap_down))
 
+write.csv(MSFT, "MSFT.csv")
+
 
 
 
