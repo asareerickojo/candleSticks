@@ -77,7 +77,6 @@ gravestone_candle <- function(high, low, open, close){
   if(0.1 * whole > body & 0.1*whole > lower){1}else{0}
 }
 
-
 #____________hammer
 hammer_candle <- function(high, low, open, close){
   whole <- high - low
