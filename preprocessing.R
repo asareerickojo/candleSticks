@@ -11,6 +11,11 @@ library(tidyquant)   #https://cran.r-project.org/web/packages/tidyquant/vignette
 
 #_______________________data_______________________
 getSymbols("MSFT")
+#production_cost = case_when()
+#MS <- read_csv("MSFT.csv") %>%
+ # mutate(
+  #  whole = as.numeric(unlist(pmap_dbl(list(open, close), down_trend)))
+ # )
 MSFT <- tq_get("MSFT") %>% column_to_rownames(var = "date") %>%
   mutate(
     #characterising a candle stick
