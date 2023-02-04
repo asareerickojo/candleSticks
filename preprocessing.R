@@ -8,45 +8,49 @@ snapshot()
 library(quantmod)
 library(tidyverse)
 library(tidyquant)   #https://cran.r-project.org/web/packages/tidyquant/vignettes/TQ02-quant-integrations-in-tidyquant.html
+library(telegram.bot)
 
-#_______________________data_______________________
-getSymbols("MSFT")
-#production_cost = case_when()
-#MS <- read_csv("MSFT.csv") %>%
- # mutate(
-  #  whole = as.numeric(unlist(pmap_dbl(list(open, close), down_trend)))
- # )
-MSFT <- tq_get("MSFT") %>% column_to_rownames(var = "date") %>%
-  mutate(
-    #characterising a candle stick
-    median = (open+close)/2,
-    upper = high - pmax(open,close),
-    lower = pmin(open, close) - low,
-    whole = high - low,
-    body = abs(open - close),
+#sourcing custom functions
+source("functions/functions.R")    #got to put all candle stick pattern functions into a package
+
+# Initiate the bot session using the token from the environment variable.
+bot = Bot(token = bot_token('arbot_bot'))
+
+#alert
+library(telegram.bot)
+# Initiate the bot session using the token from the environment variable.
+bot = Bot(token = bot_token('arbot_bot'))
+
+stock_price_check = function(){
+  
+  # setting up a counter. 
+  i = 0 
+
+  while(i < 2){ 
     
-    #identifying size of a candle stick
-    small = if_else(0.1 * whole > body, 1,0),   #small candle is when 10% of the length whole gt body length
-    large = if_else(0.9 * whole < body, 1,0),
+    # Step 1. Fetching stock price
+    df <- stock_data(sticker = "TSLL", start_date = "2022-08-09")
+    df <- tail(df, 1)
     
-    #movement: is it trending up or down?
-    up = if_else(close > open, 1,0),
-    down = if_else(close < open, 1,0),
+    # Stp 3. check if there is a hammer pattern
+    df <- df %>% dplyr::filter(hammer==1 | inverted_hammer==1)
     
-    #measure how fast price moves: use inter-day gap
-    gap_up = if_else(pmin(open,close) > pmax(lag(open), lag(close)), 1,0), #candle body day 2 higher than day 1
-    gap_down = if_else(pmax(open,close) < pmin(lag(open), lag(close)), 1,0)  #candle body day 2 lower than day 1
+    #if number of row is grt 0 then the pattern exist
+    if(nrow(df) > 0){
+      # Send message if hammer exit
+      message=sprintf('hammer or inverted hammer pattern', 0.99)
+      send_msg(text = message)
+      #message(msg)
+    }
     
-    #can use SMA or EMA to capture longterm trend
-  )
-head(MSFT)
-view(MSFT %>% select(open, close, up, gap_up, down, gap_down))
-
-write.csv(MSFT, "MSFT.csv")
-
-
-
+    # Step 5. Waiting for certain interval (60 seconds)
+    Sys.sleep(60)
+    
+    # Step Drop: Incrementing counter
+    i = i + 1 # comment out this line when you run. I had to put an increment to make sure the while loop stops after 4 execusions
+  }
+}
 
 
-
+stock_price_check()
 
