@@ -332,7 +332,7 @@ send_msg = function(text){
 }
 
 
-stock_price_check = function(){
+stock_price_check = function(stock, from){
   
   # setting up a counter. 
   i = 0 
@@ -340,16 +340,17 @@ stock_price_check = function(){
   while(i < 2){ 
     
     # Step 1. Fetching stock price
-    df <- stock_data(sticker = "TSLL", start_date = "2022-08-09")
+    df <- stock_data(sticker = stock, start_date = from)
     df <- tail(df, 1)
-    
     # Stp 3. check if there is a hammer pattern
-    df <- df %>% dplyr::filter(hammer==1 | inverted_hammer==1)
-    
+    df <- df %>% dplyr::filter(hammer==1 | inverted_hammer==1 | bullish_engulfing ==1 |
+                              bearish_engulfing ==1 | bullish_harami ==1 | bearish_harami==1|piercing_line==1 |
+                              dark_cloud ==1|kicking_up ==1|kicking_down==1|three_white_soldiers==1 |
+                              three_black_crows ==1| morning_star==1|evening_star==1|falling_three==1|rising_three==1)
     #if number of row is grt 0 then the pattern exist
     if(nrow(df) > 0){
       # Send message if hammer exit
-      message=sprintf('hammer or inverted hammer pattern', 0.99)
+      message=sprintf('trading opportunity for %01s', stock)
       send_msg(text = message)
       #message(msg)
     }
@@ -357,25 +358,7 @@ stock_price_check = function(){
     # Step 5. Waiting for certain interval (60 seconds)
     Sys.sleep(60)
     
-    # Step Drop: Incrementing counter
-    i = i + 1 # comment out this line when you run. I had to put an increment to make sure the while loop stops after 4 execusions
+    # Step Drop
+    i = i + 1 
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
