@@ -13,9 +13,6 @@ library(telegram.bot)
 #sourcing custom functions
 source("functions/functions.R")    #got to put all candle stick pattern functions into a package
 
-# Initiate the bot session using the token from the environment variable.
-bot = Bot(token = bot_token('arbot_bot'))
-
 #alert
 library(telegram.bot)
 

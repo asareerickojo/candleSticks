@@ -821,6 +821,19 @@
         "yaml"
       ]
     },
+    "httpuv": {
+      "Package": "httpuv",
+      "Version": "1.6.8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "08e611aee165b27f8ff18770285fb535",
+      "Requirements": [
+        "R6",
+        "Rcpp",
+        "later",
+        "promises"
+      ]
+    },
     "httr": {
       "Package": "httr",
       "Version": "1.4.4",
@@ -1589,6 +1602,21 @@
       "Repository": "CRAN",
       "Hash": "34c16f1ef796057bfa06d3f4ff818a5d",
       "Requirements": []
+    },
+    "telegram.bot": {
+      "Package": "telegram.bot",
+      "Version": "3.0.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "5ada43cea2e60662b12eae682a5c517b",
+      "Requirements": [
+        "R6",
+        "curl",
+        "httpuv",
+        "httr",
+        "jsonlite",
+        "openssl"
+      ]
     },
     "tibble": {
       "Package": "tibble",
